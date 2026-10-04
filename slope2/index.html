@@ -5,13 +5,54 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Unity WebGL Player</title>
     <style>
-      body { padding: 0; margin: 0; background-color: #231f20; }
-      #unity-container { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; }
-      #unity-canvas { width: 960px; height: 600px; background: #231f20; }
-      #unity-loading-bar { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: none; }
-      #unity-progress-bar-empty { width: 141px; height: 18px; margin-top: 10px; background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; }
-      #unity-progress-bar-full { width: 0%; height: 100%; background: #fff; transition: width 0.2s; }
-      .loading-text { color: white; font-family: sans-serif; text-align: center; }
+      body { 
+        padding: 0; 
+        margin: 0; 
+        background-color: #231f20; 
+        overflow: hidden;
+      }
+      #unity-container { 
+        width: 100vw; 
+        height: 100vh; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        position: relative; 
+      }
+      #unity-canvas { 
+        width: 960px; 
+        height: 600px; 
+        background: #231f20; 
+        box-shadow: 0px 10px 30px rgba(0,0,0,0.5);
+      }
+      #unity-loading-bar { 
+        position: absolute; 
+        left: 50%; 
+        top: 50%; 
+        transform: translate(-50%, -50%); 
+        display: none; 
+      }
+      #unity-progress-bar-empty { 
+        width: 141px; 
+        height: 18px; 
+        margin-top: 10px; 
+        background: rgba(255,255,255,0.2); 
+        border-radius: 10px; 
+        overflow: hidden; 
+      }
+      #unity-progress-bar-full { 
+        width: 0%; 
+        height: 100%; 
+        background: #fff; 
+        transition: width 0.2s; 
+      }
+      .loading-text { 
+        color: white; 
+        font-family: sans-serif; 
+        text-align: center; 
+        font-size: 14px;
+        letter-spacing: 0.5px;
+      }
     </style>
   </head>
   <body>
@@ -27,13 +68,13 @@
 
     <script>
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/build.loader.js"; // Standard name for Unity's loader JS file
+      var loaderUrl = buildUrl + "/build.loader.js"; 
       
-      // Configuration object explicitly mapping your .unityweb files
+      // Configuration pointing directly to your uncompressed file names
       var config = {
-        dataUrl: buildUrl + "/webgl.data.unityweb",
-        frameworkUrl: buildUrl + "/build.framework.js.unityweb",
-        codeUrl: buildUrl + "/build.wasm.unityweb",
+        dataUrl: buildUrl + "/webgl.data",
+        frameworkUrl: buildUrl + "/build.framework.js",
+        codeUrl: buildUrl + "/build.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "UnityWebGLBuild",
