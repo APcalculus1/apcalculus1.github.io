@@ -269,10 +269,16 @@
   //   slot N game  -> gameN/index.html   (opens inside this site under the banner)
   const GAME_COUNT = 20;
   const IMAGE_TYPES = ["png", "jpg", "jpeg", "webp"];
-  const games = Array.from({ length: GAME_COUNT }, (_, k) => {
-    const n = k + 1;
-    return { slug: "game" + n, title: "Game " + n, href: "game" + n + "/" };
-  });
+const NAMES = {
+  1: "Slope",
+  2: "Slope 2",
+  3: "Minecraft",
+};
+
+const games = Array.from({ length: GAME_COUNT }, (_, k) => {
+  const n = k + 1;
+  return { slug: "game" + n, title: NAMES[n] || "Game " + n, href: "game" + n + "/" };
+});
 
   function placeholder(title, i) {
     const hue = (i * 37) % 360;
