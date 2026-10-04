@@ -264,21 +264,23 @@
 <div id="game"><iframe id="game-frame" title="Game" allow="fullscreen; autoplay; gamepad" allowfullscreen></iframe></div>
 
 <script>
-  // ---- 20 game slots, filled in automatically ----
-  //   slot N image -> images/gameN.png   (also tries .jpg, .jpeg, .webp)
-  //   slot N game  -> gameN/index.html   (opens inside this site under the banner)
-  const GAME_COUNT = 20;
+  // ---- YOUR GAMES: edit this list ----
+  //   slug  = the URL name AND the folder name AND the image name
+  //           (lowercase letters, numbers, hyphens only - no spaces)
+  //   title = the name shown on the tile / tooltip / browser tab
+  //
+  //   slug "snake" ->  image: images/snake.png  (also tries .jpg, .jpeg, .webp)
+  //                    game:  snake/index.html  (or snake/build/index.html etc.)
+  //                    URL:   yoursite.com/#/snake
+  //
+  // Tiles appear in the same order as this list.
   const IMAGE_TYPES = ["png", "jpg", "jpeg", "webp"];
-const NAMES = {
-  1: "Slope",
-  2: "Slope 2",
-  3: "Minecraft",
-};
-
-const games = Array.from({ length: GAME_COUNT }, (_, k) => {
-  const n = k + 1;
-  return { slug: "game" + n, title: NAMES[n] || "Game " + n, href: "game" + n + "/" };
-});
+  const games = [
+    { slug: "snake",       title: "Snake" },
+    { slug: "tetris",      title: "Tetris" },
+    { slug: "flappy-bird", title: "Flappy Bird" },
+    // add more like:  { slug: "my-game", title: "My Game" },
+  ].map(g => ({ ...g, href: g.slug + "/" }));
 
   function placeholder(title, i) {
     const hue = (i * 37) % 360;
