@@ -198,6 +198,19 @@
       0 35px 45px rgba(0, 0, 0, 0.45);
     outline: none;
   }
+  /* Game name shown on top of the picture */
+  .card .label {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    padding: 28px 12px 10px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.8));
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.05rem;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    pointer-events: none;
+  }
+  .card.no-image .label { display: none; }   /* placeholder already shows the name */
   .card img {
     width: 100%;
     height: 100%;
@@ -276,10 +289,11 @@
   // Tiles appear in the same order as this list.
   const IMAGE_TYPES = ["png", "jpg", "jpeg", "webp"];
   const games = [
-    { slug: "slope",       title: "slope" },
-    { slug: "slope2",      title: "slope2" },
-    { slug: "minecraft", title: "minecraft" },
-    // add more like:  { slug: "my-game", title: "My Game" },
+    { slug: "slope",       title: "Slope" },
+    { slug: "minecraft",      title: "Minecraft" },
+    { slug: "geometrydash", title: "Geometry Dash" },
+    { slug: "run3", title: "Run 3" },
+    { slug: "plantsvszombies", title: "Plants V.S. Zombies" },
   ].map(g => ({ ...g, href: g.slug + "/" }));
 
   function placeholder(title, i) {
@@ -316,11 +330,16 @@
           img.src = "images/" + g.slug + "." + IMAGE_TYPES[t];
         } else {
           img.onerror = null;
+          a.classList.add("no-image");
           img.src = placeholder(g.title, i);
         }
       };
       img.src = "images/" + g.slug + "." + IMAGE_TYPES[0];
       a.appendChild(img);
+      const label = document.createElement("div");
+      label.className = "label";
+      label.textContent = g.title;
+      a.appendChild(label);
       a.addEventListener("click", ev => {
         if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button !== 0) return;
         ev.preventDefault();
