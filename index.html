@@ -492,7 +492,7 @@
     });
 
     db.ref("presence").on("value", snap => {
-      countEl.textContent = Math.max(MIN_PLAYERS, snap.numChildren()).toLocaleString();
+      countEl.textContent = (MIN_PLAYERS + snap.numChildren()).toLocaleString();
     });
 
     // ---------- Live chat ----------
