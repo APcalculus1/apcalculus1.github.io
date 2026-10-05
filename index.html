@@ -18,6 +18,9 @@
     color: #fff;
     font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;                   /* lets the bottom banner fill leftover space */
+    flex-direction: column;
   }
   /* Always reserve the scrollbar's space so the banner/logo never shifts
      when the page scrollbar disappears while a game is open */
@@ -218,6 +221,16 @@
     display: block;
   }
 
+  /* ---------- Bottom banner ---------- */
+  /* Grows only to fill empty space below the grid; adds no height of its own */
+  .footer-banner {
+    flex: 1 1 0;
+    min-height: 0;
+    background: linear-gradient(0deg, var(--red) 0%, var(--red-dark) 100%);
+    box-shadow: inset 0 4px 0 var(--gold);   /* gold line along the top */
+  }
+  body.playing .footer-banner { display: none; }
+
   /* ---------- Full-screen game view (banner stays on top) ---------- */
   #game {
     display: none;
@@ -273,6 +286,8 @@
 </header>
 
 <main class="grid" id="grid"></main>
+
+<footer class="footer-banner"></footer>
 
 <div id="game"><iframe id="game-frame" title="Game" allow="fullscreen; autoplay; gamepad" allowfullscreen></iframe></div>
 
@@ -510,7 +525,17 @@
       chatText.value = "";
     });
 
-    db.ref("chat").limitToLast(50).on("child_added", snap => {
+    // Messages last 24 hours: only show the last 24h, and delete older ones
+    const DAY = 24 * 60 * 60 * 1000;
+    function purgeOld() {
+      db.ref("chat").orderByChild("ts").endAt(Date.now() - DAY).limitToFirst(100).once("value")
+        .then(snap => snap.forEach(child => { child.ref.remove().catch(() => {}); }))
+        .catch(() => {});
+    }
+    purgeOld();
+    setInterval(purgeOld, 10 * 60 * 1000);
+
+    db.ref("chat").orderByChild("ts").startAt(Date.now() - DAY).limitToLast(50).on("child_added", snap => {
       const m = snap.val();
       const row = document.createElement("div");
       row.className = "msg";
