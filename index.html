@@ -84,7 +84,12 @@
   .caret { display: inline-block; transition: transform 0.2s ease; font-size: 0.8em; }
   #chat.open .caret { transform: rotate(180deg); }
 
-  .players { justify-self: end; }
+  .banner-right {
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
   .dot {
     width: 10px; height: 10px;
     border-radius: 50%;
@@ -167,6 +172,43 @@
     font-weight: 700;
     cursor: pointer;
   }
+
+  /* ---------- Other links dropdown ---------- */
+  #links-toggle { cursor: pointer; }
+  #links.open .caret { transform: rotate(180deg); }
+  #links-panel {
+    position: absolute;
+    right: 20px;
+    top: calc(100% + 10px);
+    width: 230px;
+    max-width: calc(100vw - 24px);
+    max-height: calc(100vh - var(--banner-h) - 24px);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    background: #1d1d26;
+    border: 1px solid var(--gold);
+    border-radius: 14px;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  }
+  #links.open #links-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+  #links-panel a {
+    padding: 10px 14px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #333;
+  }
+  #links-panel a:last-child { border-bottom: 0; }
+  #links-panel a:hover { background: rgba(245, 197, 66, 0.15); color: var(--gold); }
 
   /* ---------- Grid ---------- */
   .grid {
@@ -252,10 +294,12 @@
   }
 
   @media (max-width: 600px) {
-    .banner { grid-template-columns: 1fr 1fr; padding: 12px; row-gap: 10px; }
+    .banner { grid-template-columns: auto 1fr; padding: 12px; row-gap: 10px; }
     .banner h1 { grid-column: 1 / -1; grid-row: 1; }
     #chat { grid-column: 1; grid-row: 2; }
-    .players { grid-column: 2; grid-row: 2; }
+    .banner-right { grid-column: 2; grid-row: 2; gap: 6px; }
+    .banner-right .pill { font-size: 0.8rem; padding: 6px 10px; }
+    #links-panel { right: 12px; }
     #chat-panel { left: 12px; }
     .grid { grid-template-columns: 1fr; }
   }
@@ -283,7 +327,25 @@
 
   <h1><a href="#" id="home-link">PGHS Fun</a></h1>
 
-  <div class="players pill"><span class="dot"></span><span>Players online: <span id="count">5</span></span></div>
+  <div class="banner-right">
+    <div id="links">
+      <button id="links-toggle" class="pill" type="button" aria-expanded="false">
+        Other links <span class="caret">&#9662;</span>
+      </button>
+      <div id="links-panel">
+        <a href="#" target="_blank" rel="noopener">Link 1</a>
+        <a href="#" target="_blank" rel="noopener">Link 2</a>
+        <a href="#" target="_blank" rel="noopener">Link 3</a>
+        <a href="#" target="_blank" rel="noopener">Link 4</a>
+        <a href="#" target="_blank" rel="noopener">Link 5</a>
+        <a href="#" target="_blank" rel="noopener">Link 6</a>
+        <a href="#" target="_blank" rel="noopener">Link 7</a>
+        <a href="#" target="_blank" rel="noopener">Link 8</a>
+        <a href="#" target="_blank" rel="noopener">Link 9</a>
+      </div>
+    </div>
+    <div class="players pill"><span class="dot"></span><span>Players online: <span id="count">5</span></span></div>
+  </div>
 </header>
 
 <main class="grid" id="grid"></main>
@@ -471,6 +533,18 @@
   document.addEventListener("keydown", ev => { if (ev.key === "Escape") setChat(false); });
   // Clicking into the game window moves focus to the frame; close the chat then
   window.addEventListener("blur", () => { if (document.activeElement === frame) setChat(false); });
+
+  // ---- Other links dropdown open / close ----
+  const linksBox = document.getElementById("links");
+  const linksToggle = document.getElementById("links-toggle");
+  function setLinks(open) {
+    linksBox.classList.toggle("open", open);
+    linksToggle.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  linksToggle.addEventListener("click", () => setLinks(!linksBox.classList.contains("open")));
+  document.addEventListener("click", ev => { if (!linksBox.contains(ev.target)) setLinks(false); });
+  document.addEventListener("keydown", ev => { if (ev.key === "Escape") setLinks(false); });
+  window.addEventListener("blur", () => { if (document.activeElement === frame) setLinks(false); });
 </script>
 
 <!-- ---- Real players-online counter + live chat (Firebase Realtime Database) ---- -->
