@@ -11,7 +11,7 @@
     --red-dark: #7d000e;
     --gold: #f5c542;
     --bg: #14141a;
-    --banner-h: 84px;               /* updated automatically by the script */
+    --banner-h: 84px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -20,15 +20,11 @@
     font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     min-height: 100vh;
     min-height: 100dvh;
-    display: flex;                   /* lets the bottom banner fill leftover space */
+    display: flex;
     flex-direction: column;
   }
-  /* Always reserve the scrollbar's space so the banner/logo never shifts
-     when the page scrollbar disappears while a game is open */
   html { overflow-y: scroll; scrollbar-gutter: stable; }
   body.playing { overflow: hidden; }
-
-  /* ---------- Banner ---------- */
   .banner {
     position: sticky;
     top: 0;
@@ -63,8 +59,6 @@
     text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
     outline: none;
   }
-
-  /* Shared pill style for the chat button and the players counter */
   .pill {
     display: flex;
     align-items: center;
@@ -83,7 +77,7 @@
   button.pill:hover { background: rgba(0, 0, 0, 0.5); }
   .caret { display: inline-block; transition: transform 0.2s ease; font-size: 0.8em; }
   #chat.open .caret { transform: rotate(180deg); }
-
+  
   .banner-right {
     justify-self: end;
     display: flex;
@@ -99,7 +93,7 @@
   }
   @keyframes pulse { 50% { opacity: 0.35; } }
 
-  /* ---------- Chat dropdown ---------- */
+
   #chat { justify-self: start; }
   #chat-panel {
     position: absolute;
